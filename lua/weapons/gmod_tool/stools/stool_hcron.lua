@@ -7,7 +7,7 @@ TOOL.ClientConVar[ "name" ] = "Default Holocron"
 TOOL.ClientConVar[ "model" ] = "models/props_vehicles/car005a_physics.mdl"
 TOOL.ClientConVar[ "xp" ] = 100
 TOOL.ClientConVar[ "singleuse" ] = 1
-TOOL.ClientConVar[ "persistant" ] = 1
+TOOL.ClientConVar[ "is_persistent" ] = 1
 
 
   function TOOL:LeftClick( trace )
@@ -21,7 +21,7 @@ TOOL.ClientConVar[ "persistant" ] = 1
     data["XP"] = self:GetClientNumber("xp", 100)
     data["CustomModel"] = self:GetClientInfo("model")
     data["SingleUse"] = self:GetClientNumber("singleuse")
-    data["persistant"] = self:GetClientNumber("persistant")
+    data["IsPersistent"] = self:GetClientNumber("is_persistent")
 
 
     wOS.hcrons:addHCron(data)
@@ -38,7 +38,7 @@ TOOL.ClientConVar[ "persistant" ] = 1
     data["XP"] = self:GetClientNumber("xp", 100)
     data["CustomModel"] = self:GetClientInfo("model")
     data["SingleUse"] = self:GetClientNumber("singleuse")
-    data["persistant"] = self:GetClientNumber("persistant")
+    data["IsPersistent"] = self:GetClientNumber("is_persistent")
 
 
     wOS.hcrons:updateHCron(data)
@@ -75,7 +75,7 @@ if CLIENT then
 
     panel:AddControl("CheckBox", {
       Label = "Persistent?",
-      Command = "stool_hcron_persistant"
+      Command = "stool_hcron_is_persistent"
     })
 
     panel:AddControl("Slider", {
