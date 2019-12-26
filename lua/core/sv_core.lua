@@ -7,6 +7,33 @@ wOS.hcrons.serverLoaded = false
 wOS.hcrons.dataLoaded = false
 
 
+local function wOS.hcrons:SaveHcrons()
+  for k,v in pairs(wOS.hcrons.holocrons) do
+      if(v.persistent) then
+        wOS.hcrons.data:SaveHcron(v)
+      end
+  end
+end
+
+local function wOS.hcrons:ServerStartTimer()
+  timer.Create("wos_hcrons_savetimer", wOS.hcrons.config.RefreshTime, 0, function()
+    wOS.hcrons:SaveHcrons()
+  end)
+end
+
+
+function wOS.hcrons:ServerInit()
+  if not GetConVar("wos_hcrons_refreshtime") then
+    CreateConVar("wos_hcrons_refreshtime", "300", flags=nil, "Set the time between saves")
+  end
+
+  wOS.hcrons:LoadHolocrons()
+
+  wOS.hcrons:ServerStartTimer()
+
+  wOS.hcrons:Print("Server Loaded")
+
+end
 
 --[[ HCron Load
   -- Loop through data create at pos
@@ -19,6 +46,7 @@ function wOS.hcrons:LoadHolocrons()
   if dataLoaded then
     wOS.hcrons.dataLoaded = true
   end
+
 
 end
 
@@ -85,9 +113,7 @@ end
 -- wOS.hcrons.serverLoaded = true;
 -- If Server Loaded var is true print loaded else print server failed
 
-wOS.hcrons:LoadHolocrons()
-
-wOS.hcrons:Print("Server Loaded")
+wOS.hcrons:ServerInit()
 
 
 -- Leave this here

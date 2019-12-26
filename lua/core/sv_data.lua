@@ -65,28 +65,14 @@ end
 
 function wOS.hcrons.data:LoadData()
   wOS.hcrons:Print("Loading Data")
-
-  if wOS.hcrons.config.UseMySQL then
-    if loadMySQL then
-      wOS.hcrons:Print("Loaded from MYSQL")
+  -- Start some SQL BS
+  if (not sql.TableExists("wos_hcrons")) or (not sql.TableExists("wos_hcrons_pdata")) then
+    if(setupSQLiteTables()) then
+      wOS.hcrons:Print("TABLES SETUP")
     else
-      wOS.hcrons:Print("Failed from MYSQL")
+      wOS.hcrons:Print("TABLES FAILED")
+      return false
     end
-  else
-      -- Start some SQL BS
-      if (not sql.TableExists("wos_hcrons")) or (not sql.TableExists("wos_hcrons_pdata")) then
-        if(setupSQLiteTables()) then
-          wOS.hcrons:Print("TABLES SETUP")
-        else
-          wOS.hcrons:Print("TABLES FAILED")
-        end
-      end
-
-
-      --sql.Begin()
-
-      --sql.Commit()
-
   end
 
   return true
