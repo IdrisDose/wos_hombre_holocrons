@@ -11,9 +11,11 @@ TOOL.ClientConVar[ "is_persistent" ] = 1
 
 
   function TOOL:LeftClick( trace )
+    if ( CLIENT ) then return true end
+    if ( (self:GetOwner():IsAdmin() != false) and (self:GetOwner():IsSuperAdmin() != false) ) then return false end
     if ( trace.HitSky || !trace.HitPos ) then return false end
     if ( IsValid( trace.Entity ) && ( trace.Entity:GetClass() == "ent_hombrecron" ) ) then return false end
-    if ( CLIENT ) then return true end
+
 
     local data = {}
     data["trace"] = trace
@@ -22,35 +24,49 @@ TOOL.ClientConVar[ "is_persistent" ] = 1
     data["CustomModel"] = self:GetClientInfo("model")
     data["SingleUse"] = self:GetClientNumber("singleuse")
     data["IsPersistent"] = self:GetClientNumber("is_persistent")
+    data["Name"] = self:GetClientInfo('name')
 
 
-    wOS.hcrons:addHCron(data)
+    wOS.HCS:addHCron(data)
   end
 
   function TOOL:RightClick(trace)
-    if ( trace.HitSky || !trace.HitPos ) then return false end
-    if ( !IsValid( trace.Entity ) && ( trace.Entity:GetClass() != "ent_hombrecron" ) ) then return false end
     if ( CLIENT ) then return true end
+    if ( (self:GetOwner():IsAdmin() != false) and (self:GetOwner():IsSuperAdmin() != false) ) then return false end
+    if ( trace.HitSky || !trace.HitPos ) then return false end
+    if ( trace.Entity:GetClass() != "ent_hombrecron" || !IsValid(trace.Entity)) then return false end
+    if not trace.Entity:IsValid() then return false end
+
+    wOS.HCS:deleteHCron(trace.Entity)
+  end
+
+  function TOOL:Reload(trace)
+    if ( CLIENT ) then return true end
+    if ( (self:GetOwner():IsAdmin() != false) and (self:GetOwner():IsSuperAdmin() != false) ) then return false end
+    if ( trace.HitSky || !trace.HitPos ) then return false end
+    if ( trace.Entity:GetClass() != "ent_hombrecron" ) then return false end
+
 
     local data = {}
     data["trace"] = trace
     data["ply"] = self:GetOwner()
     data["XP"] = self:GetClientNumber("xp", 100)
     data["CustomModel"] = self:GetClientInfo("model")
-    data["SingleUse"] = self:GetClientNumber("singleuse")
-    data["IsPersistent"] = self:GetClientNumber("is_persistent")
+    data["SingleUse"] = tobool(self:GetClientNumber("singleuse"))
+    data["IsPersistent"] = tobool(self:GetClientNumber("is_persistent"))
+    data["Name"] = self:GetClientInfo('name')
+
+    wOS.HCS:updateHCron(data)
 
 
-    wOS.hcrons:updateHCron(data)
   end
-
 
 if CLIENT then
 
   language.Add( "tool.stool_hcron", "Holocron Tool" )
   language.Add( "tool.stool_hcron.name", "Holocron Tool" )
   language.Add( "tool.stool_hcron.desc", "Spawn special holocrons" )
-  language.Add( "tool.stool_hcron.0", "Left click to create a holocron. Right click to update a holocron" ) -- Not sure why I keep this
+  language.Add( "tool.stool_hcron.0", "Left click to create a holocron. Right click to Delete Holocron. Reload to update a holocron." ) -- Not sure why I keep this
 
 
   function TOOL.BuildCPanel(panel)
