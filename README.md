@@ -13,3 +13,4 @@ Updating the holocron is dodgey can sometimes error
 
 ## TODO:
 - Optimize Updating
+- Add ADMIN only usage right now anyone with toolgun can place and use
