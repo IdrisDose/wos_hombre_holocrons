@@ -12,7 +12,7 @@ TOOL.ClientConVar[ "is_persistent" ] = 1
 
   function TOOL:LeftClick( trace )
     if ( CLIENT ) then return true end
-    if ( (self:GetOwner():IsAdmin() != false) and (self:GetOwner():IsSuperAdmin() != false) ) then return false end
+    if ( (self:GetOwner():IsAdmin() == false) and (self:GetOwner():IsSuperAdmin() == false) ) then return false end
     if ( trace.HitSky || !trace.HitPos ) then return false end
     if ( IsValid( trace.Entity ) && ( trace.Entity:GetClass() == "ent_hombrecron" ) ) then return false end
 
@@ -32,7 +32,7 @@ TOOL.ClientConVar[ "is_persistent" ] = 1
 
   function TOOL:RightClick(trace)
     if ( CLIENT ) then return true end
-    if ( (self:GetOwner():IsAdmin() != false) and (self:GetOwner():IsSuperAdmin() != false) ) then return false end
+    if ( (self:GetOwner():IsAdmin() == false) and (self:GetOwner():IsSuperAdmin() == false) ) then return false end
     if ( trace.HitSky || !trace.HitPos ) then return false end
     if ( trace.Entity:GetClass() != "ent_hombrecron" || !IsValid(trace.Entity)) then return false end
     if not trace.Entity:IsValid() then return false end
@@ -42,7 +42,7 @@ TOOL.ClientConVar[ "is_persistent" ] = 1
 
   function TOOL:Reload(trace)
     if ( CLIENT ) then return true end
-    if ( (self:GetOwner():IsAdmin() != false) and (self:GetOwner():IsSuperAdmin() != false) ) then return false end
+    if ( (self:GetOwner():IsAdmin() == false) and (self:GetOwner():IsSuperAdmin() == false) ) then return false end
     if ( trace.HitSky || !trace.HitPos ) then return false end
     if ( trace.Entity:GetClass() != "ent_hombrecron" ) then return false end
 
